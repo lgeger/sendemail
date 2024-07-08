@@ -2,13 +2,13 @@ export async function onRequestPost(context) {
   try {
       const { from, to, subject, text } = await context.request.json();
 
-      if (!process.env.RESEND_API_KEY) {
+      if (!RESEND_API_KEY) {
         throw new Error('RESEND_API_KEY is not set');
       }
-      console.log("env is ",process.env.RESEND_API_KEY);
-      token=env.RESEND_API_KEY;
+      console.log("env is ",RESEND_API_KEY);
+      token=RESEND_API_KEY;
       token = 'Bearer '+token;
-      console.log("token is ",env.RESEND_API_KEY);
+      console.log("token is ",token);
       const response = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
