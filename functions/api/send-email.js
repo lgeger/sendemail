@@ -2,10 +2,10 @@ export async function onRequestPost(context) {
   try {
       const { from, to, subject, text } = await context.request.json();
 
-      if (!env.RESEND_API_KEY) {
+      if (!process.env.RESEND_API_KEY) {
         throw new Error('RESEND_API_KEY is not set');
       }
-      console.log("env is ",env.RESEND_API_KEY);
+      console.log("env is ",process.env.RESEND_API_KEY);
       token=env.RESEND_API_KEY;
       token = 'Bearer '+token;
       console.log("token is ",env.RESEND_API_KEY);
