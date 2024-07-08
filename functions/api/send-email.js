@@ -33,7 +33,8 @@ export async function onRequestPost(context) {
           });
       }
   } catch (error) {
-      return new Response(JSON.stringify({ message: 'Internal server error' }), {
+      console.log("post error",error);
+      return new Response(JSON.stringify({ message: error }), {
           status: 500,
           headers: { 'Content-Type': 'application/json' }
       });
