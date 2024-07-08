@@ -1,0 +1,41 @@
+export async function onRequestPost(context) {
+  try {
+      const { from, to, subject, text } = await context.request.json();
+      
+      if (!env.RESEND_API_KEY) {
+        throw new Error('RESEND_API_KEY is not set');
+      }
+
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            from: from,
+            to: [to],
+            subject: subject,
+            text: text
+        })
+    });
+      
+      const result = await response.json();
+      
+      if (response.ok) {
+          return new Response(JSON.stringify({ message: 'Email sent successfully' }), {
+              headers: { 'Content-Type': 'application/json' }
+          });
+      } else {
+          return new Response(JSON.stringify({ message: result.message || 'Failed to send email' }), {
+              status: 400,
+              headers: { 'Content-Type': 'application/json' }
+          });
+      }
+  } catch (error) {
+      return new Response(JSON.stringify({ message: 'Internal server error' }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' }
+      });
+  }
+}
